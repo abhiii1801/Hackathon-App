@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question": "Given the attached dataset, what is the mean of the 'age' column?",
+    "type": "numeric",
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": 29.5
+  },
+  {
+    "id": 2,
+    "question": "Which of the following columns in the dataset are categorical? (Select all that apply)",
+    "type": "msq",
+    "options": ["age", "gender", "income", "department"],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": ["gender", "department"]
+  },
+  {
+    "id": 3,
+    "question": "What is the department of the person with the highest income?",
+    "type": "mcq",
+    "options": ["Data Science", "Analytics", "HR", "Marketing"],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": "Analytics"
+  },
+  {
+    "id": 4,
+    "question": "Which year was the Data Science Society founded?",
+    "type": "mcq",
+    "options": ["2015", "2018", "2020", "2022"],
+    "points": 2,
+    "dataset_required": false,
+    "correct_answer": "2018"
+  }
+]
