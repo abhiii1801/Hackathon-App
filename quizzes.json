@@ -1,0 +1,27 @@
+[
+  {
+    "quiz_id": "quiz1",
+    "name": "Data Science Basics Quiz",
+    "questions_file": "questions_quiz1.json"
+  },
+  {
+    "quiz_id": "quiz2",
+    "name": "Advanced Analytics Quiz",
+    "questions_file": "questions_quiz2.json"
+  },
+  {
+    "quiz_id": "quiz3",
+    "name": "Machine Learning Fundamentals",
+    "questions_file": "questions_quiz3.json"
+  },
+  {
+    "quiz_id": "quiz4",
+    "name": "Data Visualization Techniques",
+    "questions_file": "questions_quiz4.json"
+  },
+  {
+    "quiz_id": "quiz5",
+    "name": "Big Data Concepts & Tools",
+    "questions_file": "questions_quiz5.json"
+  }
+]

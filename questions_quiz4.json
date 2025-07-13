@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "question": "Which chart best represents the distribution of a numerical column?",
+    "type": "mcq",
+    "options": [
+      "Bar Chart",
+      "Histogram",
+      "Pie Chart",
+      "Line Chart"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": "Histogram"
+  },
+  {
+    "id": 2,
+    "question": "What insights can you derive from the sales trend chart?",
+    "type": "mcq",
+    "options": [
+      "Increasing",
+      "Decreasing",
+      "Stable",
+      "Seasonal"
+    ],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": "Seasonal"
+  },
+  {
+    "id": 3,
+    "question": "Which of the following are common visualization libraries in Python? (Select all that apply)",
+    "type": "msq",
+    "options": [
+      "Matplotlib",
+      "Seaborn",
+      "NumPy",
+      "Plotly"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": [
+      "Matplotlib",
+      "Seaborn",
+      "Plotly"
+    ]
+  }
+]

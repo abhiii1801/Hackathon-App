@@ -29,6 +29,31 @@ def register_student(username, password, name, email):
     save_json('students.json', students)
     return True
 
+def load_active_quiz():
+    quizzes = load_json('quizzes.json')
+    if 'active_quiz' not in st.session_state:
+        st.session_state.active_quiz = quizzes[0]['quiz_id']
+    return quizzes, st.session_state.active_quiz
+
+def set_active_quiz(quiz_id):
+    st.session_state.active_quiz = quiz_id
+
+def get_quiz_questions(quiz_id):
+    quizzes = load_json('quizzes.json')
+    for quiz in quizzes:
+        if quiz['quiz_id'] == quiz_id:
+            return load_json(quiz['questions_file'])
+    return []
+
+def load_submissions():
+    try:
+        return load_json('submissions.json')
+    except:
+        return {}
+
+def save_submissions(subs):
+    save_json('submissions.json', subs)
+
 def get_leaderboard():
     submissions = load_json('submissions.json')
     students = {s['username']: s for s in load_json('students.json')}
@@ -54,21 +79,32 @@ def main():
             [data-testid="stSidebar"], [data-testid="stSidebarNav"] {display: none !important;}
             </style>
         """, unsafe_allow_html=True)
+    # Remove sidebar/navbar and use buttons for login/register
     if 'user' not in st.session_state:
         st.session_state.user = None
     if 'is_admin' not in st.session_state:
         st.session_state.is_admin = False
+    if 'choice' not in st.session_state:
+        st.session_state.choice = "Login"
     if not st.session_state.get('user'):
-        if 'choice' not in st.session_state:
-            st.session_state.choice = "Login"
-        menu = ["Login", "Register"]
-        st.sidebar.title("Menu")
-        st.session_state.choice = st.sidebar.selectbox("Menu", menu, index=menu.index(st.session_state.choice))
-        choice = st.session_state.choice
-        if choice == "Login":
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            if st.button("Login"):
+        st.markdown("""
+            <style>
+            [data-testid="stSidebar"], [data-testid="stSidebarNav"] {display: none !important;}
+            </style>
+        """, unsafe_allow_html=True)
+        if st.session_state.choice == "Login":
+            st.markdown("### Login")
+            username = st.text_input("Username", key="login_username")
+            password = st.text_input("Password", type="password", key="login_password")
+            login_col, register_col = st.columns([1, 1])
+            with login_col:
+                login_clicked = st.button("Login")
+            with register_col:
+                register_clicked = st.button("Register")
+            if register_clicked:
+                st.session_state.choice = "Register"
+                st.rerun()
+            if login_clicked:
                 if get_admin(username, password):
                     st.session_state.user = 'admin'
                     st.session_state.is_admin = True
@@ -81,16 +117,26 @@ def main():
                         st.rerun()
                     else:
                         st.error("Invalid credentials")
-        elif choice == "Register":
-            name = st.text_input("Full Name")
-            email = st.text_input("Email")
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            if st.button("Register"):
+        elif st.session_state.choice == "Register":
+            st.markdown("### Register")
+            name = st.text_input("Full Name", key="register_name")
+            email = st.text_input("Email", key="register_email")
+            username = st.text_input("Username", key="register_username")
+            password = st.text_input("Password", type="password", key="register_password")
+            reg_col, login_col = st.columns([1, 1])
+            with reg_col:
+                submit_reg = st.button("Submit Registration")
+            with login_col:
+                login_btn = st.button("Login", key="register_login_btn")
+            if submit_reg:
                 if register_student(username, password, name, email):
                     st.success("Registration successful. Please login.")
+                    st.session_state.choice = "Login"
                 else:
                     st.error("Username already exists.")
+            if login_btn:
+                st.session_state.choice = "Login"
+                st.rerun()
     # Main app after login
     if st.session_state.user:
         st.markdown("""
@@ -98,10 +144,28 @@ def main():
             [data-testid='stSidebar'], [data-testid='stSidebarNav'] {display: none !important;}
             </style>
         """, unsafe_allow_html=True)
+        quizzes, active_quiz = load_active_quiz()
         if st.session_state.is_admin:
             st.header("Admin Dashboard")
+            st.subheader("Select Active Quiz")
+            quiz_names = {q['quiz_id']: q['name'] for q in quizzes}
+            selected_quiz = st.selectbox("Active Quiz", options=list(quiz_names.keys()), format_func=lambda x: quiz_names[x], index=[q['quiz_id'] for q in quizzes].index(active_quiz))
+            if selected_quiz != active_quiz:
+                set_active_quiz(selected_quiz)
+                st.rerun()
             st.subheader("Leaderboard")
-            leaderboard = get_leaderboard()
+            submissions = load_submissions()
+            leaderboard = []
+            students = {s['username']: s for s in load_json('students.json')}
+            for sub in submissions.get(active_quiz, []):
+                info = students.get(sub['username'], {})
+                leaderboard.append({
+                    'username': sub['username'],
+                    'name': info.get('name', ''),
+                    'marks': sub['marks'],
+                    'answers': sub['answers']
+                })
+            leaderboard.sort(key=lambda x: x['marks'], reverse=True)
             if leaderboard:
                 df = pd.DataFrame(leaderboard)[['username', 'name', 'marks']]
                 df.index += 1
@@ -130,57 +194,67 @@ def main():
                     ans_table.append({"Question ID": qid, "Answer": ans_str})
                 st.table(pd.DataFrame(ans_table))
         else:
-            student = get_student(st.session_state.user)
-            st.header(f"Welcome, {student['name']}")
-            st.write(f"Email: {student['email']}")
-            st.download_button("Download Dataset", data=open('sample_dataset.csv', 'rb').read(), file_name="dataset.csv")
-            st.subheader("Quiz")
-            questions = load_json('questions.json')
-            answers = {}
-            for q in questions:
-                st.markdown(f"**Q{q['id']}: {q['question']}**")
-                if q['type'] == 'numeric':
-                    ans = st.number_input(f"Your answer (Q{q['id']})", key=f"q{q['id']}")
-                elif q['type'] == 'msq':
-                    ans = st.multiselect(f"Select all that apply (Q{q['id']})", q['options'], key=f"q{q['id']}")
-                elif q['type'] == 'mcq':
-                    ans = st.radio(f"Select one (Q{q['id']})", q['options'], key=f"q{q['id']}")
-                else:
-                    ans = None
-                answers[str(q['id'])] = ans
-            if st.button("Submit Quiz"):
-                # Evaluate
-                total = 0
+            quizzes, active_quiz = load_active_quiz()
+            quiz_names = {q['quiz_id']: q['name'] for q in quizzes}
+            st.header(f"Welcome, {get_student(st.session_state.user)['name']}")
+            st.write(f"Email: {get_student(st.session_state.user)['email']}")
+            st.subheader(f" {quiz_names[active_quiz]}")
+            # Add back the dataset download button if the quiz has dataset questions
+            questions = get_quiz_questions(active_quiz)
+            if any(q.get('dataset_required', False) for q in questions):
+                st.write(f"Download this file to continue: ") 
+                st.download_button("Download Dataset", data=open('sample_dataset.csv', 'rb').read(), file_name="dataset.csv")
+            submissions = load_submissions()
+            # Fix: handle both dict and legacy list format for submissions.json
+            if isinstance(submissions, dict):
+                quiz_subs = submissions.get(active_quiz, [])
+            else:
+                quiz_subs = submissions  # fallback for legacy list format
+            already_submitted = any(sub['username'] == st.session_state.user for sub in quiz_subs)
+            if already_submitted:
+                st.info("You have already submitted this quiz. You cannot attempt it again.")
+            else:
+                questions = get_quiz_questions(active_quiz)
+                answers = {}
                 for q in questions:
-                    user_ans = answers[str(q['id'])]
-                    correct = q['correct_answer']
+                    st.markdown(f"**Q{q['id']}: {q['question']}**")
                     if q['type'] == 'numeric':
-                        if abs(user_ans - correct) < 1e-3:
-                            total += q['points']
+                        ans = st.number_input(f"Your answer (Q{q['id']})", key=f"q{active_quiz}_{q['id']}")
                     elif q['type'] == 'msq':
-                        if set(user_ans) == set(correct):
-                            total += q['points']
+                        ans = st.multiselect(f"Select all that apply (Q{q['id']})", q['options'], key=f"q{active_quiz}_{q['id']}")
                     elif q['type'] == 'mcq':
-                        if user_ans == correct:
-                            total += q['points']
-                # Save submission
-                submissions = load_json('submissions.json')
-                found = False
-                for sub in submissions:
-                    if sub['username'] == student['username']:
-                        sub['answers'] = answers
-                        sub['marks'] = total
-                        found = True
-                        break
-                if not found:
-                    submissions.append({"username": student['username'], "answers": answers, "marks": total})
-                save_json('submissions.json', submissions)
-                st.success("Quiz submitted! Your marks will be updated on the leaderboard shortly.")
-                time.sleep(2)
-                st.session_state.user = None
-                st.session_state.is_admin = False
-                st.session_state.choice = "Login"
-                st.rerun()
+                        ans = st.radio(f"Select one (Q{q['id']})", q['options'], key=f"q{active_quiz}_{q['id']}")
+                    else:
+                        ans = None
+                    answers[str(q['id'])] = ans
+                if st.button("Submit Quiz"):
+                    total = 0
+                    for q in questions:
+                        user_ans = answers[str(q['id'])]
+                        correct = q['correct_answer']
+                        if q['type'] == 'numeric':
+                            if abs(user_ans - correct) < 1e-3:
+                                total += q['points']
+                        elif q['type'] == 'msq':
+                            if set(user_ans) == set(correct):
+                                total += q['points']
+                        elif q['type'] == 'mcq':
+                            if user_ans == correct:
+                                total += q['points']
+                    # Save submission
+                    if isinstance(submissions, dict):
+                        if active_quiz not in submissions:
+                            submissions[active_quiz] = []
+                        submissions[active_quiz].append({"username": st.session_state.user, "answers": answers, "marks": total})
+                    else:
+                        submissions.append({"username": st.session_state.user, "answers": answers, "marks": total})
+                    save_submissions(submissions)
+                    st.success("Quiz submitted! Your marks will be updated on the leaderboard shortly.")
+                    time.sleep(2)
+                    st.session_state.user = None
+                    st.session_state.is_admin = False
+                    st.session_state.choice = "Login"
+                    st.rerun()
 
 if __name__ == "__main__":
     main()

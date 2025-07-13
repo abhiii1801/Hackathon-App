@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "question": "What is the accuracy of the classification model?",
+    "type": "numeric",
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": 0.91
+  },
+  {
+    "id": 2,
+    "question": "Which of these are supervised learning algorithms? (Select all that apply)",
+    "type": "msq",
+    "options": [
+      "K-Means",
+      "SVM",
+      "Naive Bayes",
+      "PCA"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": [
+      "SVM",
+      "Naive Bayes"
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Which metric is best to evaluate an imbalanced classification model?",
+    "type": "mcq",
+    "options": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1-Score"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": "F1-Score"
+  }
+]

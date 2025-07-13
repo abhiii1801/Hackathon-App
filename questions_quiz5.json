@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "question": "What is the size of the dataset in GB?",
+    "type": "numeric",
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": 4.8
+  },
+  {
+    "id": 2,
+    "question": "Which tools are used in Big Data processing? (Select all that apply)",
+    "type": "msq",
+    "options": [
+      "Hadoop",
+      "Spark",
+      "Excel",
+      "Kafka"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": [
+      "Hadoop",
+      "Spark",
+      "Kafka"
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Which framework is best suited for stream processing?",
+    "type": "mcq",
+    "options": [
+      "Spark",
+      "Pandas",
+      "Flume",
+      "Kafka Streams"
+    ],
+    "points": 5,
+    "dataset_required": false,
+    "correct_answer": "Kafka Streams"
+  }
+]

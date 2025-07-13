@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "question": "What is the average salary in the dataset?",
+    "type": "numeric",
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": 52000.0
+  },
+  {
+    "id": 2,
+    "question": "Which columns represent categorical data? (Select all that apply)",
+    "type": "msq",
+    "options": [
+      "salary",
+      "city",
+      "experience",
+      "role"
+    ],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": [
+      "city",
+      "role"
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Which city has the most employees?",
+    "type": "mcq",
+    "options": [
+      "Delhi",
+      "Mumbai",
+      "Bangalore",
+      "Chennai"
+    ],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": "Bangalore"
+  }
+]

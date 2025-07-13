@@ -1,26 +1,62 @@
 [
   {
-    "username": "student1",
-    "password": "pass1",
-    "name": "Alice Smith",
-    "email": "alice@example.com"
+    "username": "student01",
+    "password": "pass123",
+    "name": "Riya Sharma",
+    "email": "riya.sharma@example.com"
   },
   {
-    "username": "student2",
-    "password": "pass2",
-    "name": "Bob Lee",
-    "email": "bob@example.com"
+    "username": "student02",
+    "password": "pass234",
+    "name": "Aarav Verma",
+    "email": "aarav.verma@example.com"
   },
   {
-    "username": "Abhiii",
-    "password": "1234567890",
-    "name": "Abhinav Tomar",
-    "email": ""
+    "username": "student03",
+    "password": "pass345",
+    "name": "Sneha Iyer",
+    "email": "sneha.iyer@example.com"
   },
   {
-    "username": "",
-    "password": "1234567890",
-    "name": "Abhinav Tomar",
-    "email": ""
+    "username": "student04",
+    "password": "pass456",
+    "name": "Vivaan Deshmukh",
+    "email": "vivaan.deshmukh@example.com"
+  },
+  {
+    "username": "student05",
+    "password": "pass567",
+    "name": "Ananya Reddy",
+    "email": "ananya.reddy@example.com"
+  },
+  {
+    "username": "student06",
+    "password": "pass678",
+    "name": "Kabir Nair",
+    "email": "kabir.nair@example.com"
+  },
+  {
+    "username": "student07",
+    "password": "pass789",
+    "name": "Meera Joshi",
+    "email": "meera.joshi@example.com"
+  },
+  {
+    "username": "student08",
+    "password": "pass890",
+    "name": "Ishaan Mehta",
+    "email": "ishaan.mehta@example.com"
+  },
+  {
+    "username": "student09",
+    "password": "pass901",
+    "name": "Diya Kapoor",
+    "email": "diya.kapoor@example.com"
+  },
+  {
+    "username": "student10",
+    "password": "pass012",
+    "name": "Arjun Malhotra",
+    "email": "arjun.malhotra@example.com"
   }
 ]

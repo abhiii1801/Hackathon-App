@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "question": "What is the R-squared value of the regression model on the dataset?",
+    "type": "numeric",
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": 0.87
+  },
+  {
+    "id": 2,
+    "question": "Which features are most important in the model? (Select all that apply)",
+    "type": "msq",
+    "options": [
+      "Age",
+      "Income",
+      "Education",
+      "Location"
+    ],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": [
+      "Income",
+      "Education"
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Which algorithm performed best on the dataset?",
+    "type": "mcq",
+    "options": [
+      "Linear Regression",
+      "Decision Tree",
+      "Random Forest",
+      "KNN"
+    ],
+    "points": 5,
+    "dataset_required": true,
+    "correct_answer": "Random Forest"
+  }
+]
