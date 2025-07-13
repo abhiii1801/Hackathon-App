@@ -1,4 +1,6 @@
 import streamlit as st
+st.set_page_config(page_title="InsightX Innovators Quiz", page_icon="🧑‍💻", layout="centered", initial_sidebar_state="auto")
+
 import json
 import pandas as pd
 import time
@@ -92,7 +94,6 @@ def get_leaderboard():
     return leaderboard
 
 def main():
-    st.set_page_config(page_title="InsightX Innovators Quiz", page_icon="🧑‍💻", layout="centered", initial_sidebar_state="auto")
     st.title("🧑‍💻 InsightX Innovators Quiz App")
     # Hide sidebar and menu after login
     if st.session_state.get('user'):
