@@ -21,11 +21,11 @@ def get_student(username):
 def get_admin(username, password):
     return username == 'admin' and password == 'admin123'
 
-def register_student(username, password, name, email):
+def register_student(username, password, name):
     students = load_json('students.json')
     if any(s['username'] == username for s in students):
         return False
-    students.append({"username": username, "password": password, "name": name, "email": email})
+    students.append({"username": username, "password": password, "name": name})
     save_json('students.json', students)
     return True
 
@@ -105,7 +105,9 @@ def main():
                 st.session_state.choice = "Register"
                 st.rerun()
             if login_clicked:
-                if get_admin(username, password):
+                if not username or not password:
+                    st.error("Please fill in all fields.")
+                elif get_admin(username, password):
                     st.session_state.user = 'admin'
                     st.session_state.is_admin = True
                     st.rerun()
@@ -120,7 +122,6 @@ def main():
         elif st.session_state.choice == "Register":
             st.markdown("### Register")
             name = st.text_input("Full Name", key="register_name")
-            email = st.text_input("Email", key="register_email")
             username = st.text_input("Username", key="register_username")
             password = st.text_input("Password", type="password", key="register_password")
             reg_col, login_col = st.columns([1, 1])
@@ -129,7 +130,9 @@ def main():
             with login_col:
                 login_btn = st.button("Login", key="register_login_btn")
             if submit_reg:
-                if register_student(username, password, name, email):
+                if not name or not username or not password:
+                    st.error("Please fill in all fields.")
+                elif register_student(username, password, name):
                     st.success("Registration successful. Please login.")
                     st.session_state.choice = "Login"
                 else:
@@ -197,7 +200,6 @@ def main():
             quizzes, active_quiz = load_active_quiz()
             quiz_names = {q['quiz_id']: q['name'] for q in quizzes}
             st.header(f"Welcome, {get_student(st.session_state.user)['name']}")
-            st.write(f"Email: {get_student(st.session_state.user)['email']}")
             st.subheader(f" {quiz_names[active_quiz]}")
             # Add back the dataset download button if the quiz has dataset questions
             questions = get_quiz_questions(active_quiz)

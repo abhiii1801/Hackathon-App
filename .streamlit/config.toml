@@ -1,14 +1,10 @@
-[server]
-enableStaticServing = true
-
 [browser]
 gatherUsageStats = false
 
 [ui]
 hideTopBar = true
+showSourceLink = false
 
 [server]
 headless = true
 
-[ui]
-showSourceLink = false

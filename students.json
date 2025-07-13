@@ -58,5 +58,10 @@
     "password": "pass012",
     "name": "Arjun Malhotra",
     "email": "arjun.malhotra@example.com"
+  },
+  {
+    "username": "Abhiii",
+    "password": "1234567890",
+    "name": "Abhinav Tomar"
   }
 ]
