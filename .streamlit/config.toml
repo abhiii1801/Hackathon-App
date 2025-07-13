@@ -1,0 +1,14 @@
+[server]
+enableStaticServing = true
+
+[browser]
+gatherUsageStats = false
+
+[ui]
+hideTopBar = true
+
+[server]
+headless = true
+
+[ui]
+showSourceLink = false
