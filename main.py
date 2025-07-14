@@ -1,5 +1,5 @@
 import streamlit as st
-st.set_page_config(page_title="InsightX Innovators Quiz", page_icon="🧑‍💻", layout="centered", initial_sidebar_state="auto")
+st.set_page_config(page_title="InsightX Innovators Quiz Part 2", page_icon="🧑‍💻", layout="centered", initial_sidebar_state="auto")
 
 import json
 import pandas as pd
